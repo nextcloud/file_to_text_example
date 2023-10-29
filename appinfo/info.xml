@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<info>
+	<id>file_to_text_example</id>
+	<name>Optical Recognition Example</name>
+	<summary>Image To Text Example</summary>
+	<description>
+	<![CDATA[
+**Demonstration of using [`AppAPI`](https://github.com/cloud-py-api/app_api) and File Actions in GO.**
+
+This application is an example of usage of [gosseract](https://github.com/otiai10/gosseract) library.
+
+It shouldn't be difficult to build much finer application using the [tesseract](https://github.com/tesseract-ocr/tesseract) library and release a full application.
+
+Refer to [How to install](https://github.com/cloud-py-api/file_to_text_example/blob/main/HOW_TO_INSTALL.md) to try it.
+	]]></description>
+	<version>1.1.0</version>
+	<licence>agpl</licence>
+	<author mail="andrey18106x@gmail.com" homepage="https://github.com/andrey18106">Andrey Borysenko</author>
+	<author mail="bigcat88@icloud.com" homepage="https://github.com/bigcat88">Alexander Piskun</author>
+	<namespace>FileToTextExample</namespace>
+	<screenshot>https://raw.githubusercontent.com/cloud-py-api/file_to_text_example/main/screenshots/fileaction.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/cloud-py-api/file_to_text_example/main/screenshots/input.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/cloud-py-api/file_to_text_example/main/screenshots/output.png</screenshot>
+	<category>tools</category>
+	<website>https://github.com/cloud-py-api/file_to_text_example</website>
+	<bugs>https://github.com/cloud-py-api/file_to_text_example/issues</bugs>
+	<repository type="git">https://github.com/cloud-py-api/file_to_text_example.git</repository>
+	<dependencies>
+		<nextcloud min-version="27" max-version="28"/>
+	</dependencies>
+	<external-app>
+		<docker-install>
+			<registry>ghcr.io</registry>
+			<image>cloud-py-api/file_to_text_example</image>
+			<image-tag>1.1.0</image-tag>
+		</docker-install>
+		<scopes>
+			<required>
+				<value>FILES</value>
+				<value>NOTIFICATIONS</value>
+			</required>
+			<optional>
+			</optional>
+		</scopes>
+		<protocol>http</protocol>
+		<system>false</system>
+	</external-app>
+</info>
