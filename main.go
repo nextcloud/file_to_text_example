@@ -216,7 +216,6 @@ type UiFileActionHandlerInfo struct {
 		Mtime        int         `json:"mtime"`
 		Size         int         `json:"size"`
 		Favorite     string      `json:"favorite"`
-		Permissions  string      `json:"permissions"`
 		ShareOwner   interface{} `json:"shareOwner"`
 		ShareOwnerId interface{} `json:"shareOwnerId"`
 		UserId       string      `json:"userId"`
