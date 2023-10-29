@@ -159,9 +159,9 @@ func enabledHandler(w http.ResponseWriter, r *http.Request) {
 		if isEnabled {
 			_, err := ocsCall("POST", "/ocs/v1.php/apps/app_api/api/v1/files/actions/menu", "", Payload{
 				"fileActionMenuParams": Payload{
-					"name":           "ocr_pdf_text",
+					"name":           "ocr_png_text",
 					"display_name":   "Optical Text",
-					"mime":           "application/pdf",
+					"mime":           "image/png",
 					"permissions":    31,
 					"action_handler": "/ocr_text",
 				},
@@ -183,7 +183,7 @@ func enabledHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		} else {
 			_, err := ocsCall("DELETE", "/ocs/v1.php/apps/app_api/api/v1/files/actions/menu", "", Payload{
-				"fileActionMenuName": "ocr_pdf_text",
+				"fileActionMenuName": "ocr_png_text",
 			})
 			if err != nil {
 				r = err.Error()

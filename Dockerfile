@@ -9,10 +9,10 @@ RUN apt-get install -y -qq \
   tesseract-ocr-deu \
   tesseract-ocr-jpn
 
-COPY go.mod ${GOPATH}/
-COPY go.sum ${GOPATH}/
-COPY main.go ${GOPATH}/
+COPY go.mod ${GOPATH}/app/
+COPY go.sum ${GOPATH}/app/
+COPY main.go ${GOPATH}/app/
 
 
-WORKDIR ${GOPATH}/
+WORKDIR ${GOPATH}/app/
 ENTRYPOINT ["go", "run", "main.go"]
