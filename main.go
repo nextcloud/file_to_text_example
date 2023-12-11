@@ -144,19 +144,9 @@ func enabledHandler(w http.ResponseWriter, r *http.Request) {
 		r := ""
 		if isEnabled {
 			_, err := ocsCall("POST", "/ocs/v1.php/apps/app_api/api/v1/ui/files-actions-menu", "", Payload{
-				"name":          "ocr_png_text",
+				"name":          "ocr_text",
 				"displayName":   "Optical Text",
-				"mime":          "image/png",
-				"permissions":   31,
-				"actionHandler": "/ocr_text",
-			})
-			if err != nil {
-				r = err.Error()
-			}
-			_, err = ocsCall("POST", "/ocs/v1.php/apps/app_api/api/v1/ui/files-actions-menu", "", Payload{
-				"name":          "ocr_jpeg_text",
-				"displayName":   "Optical Text",
-				"mime":          "image/jpeg",
+				"mime":          "image/png, image/jpeg",
 				"permissions":   31,
 				"actionHandler": "/ocr_text",
 			})
@@ -165,13 +155,7 @@ func enabledHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		} else {
 			_, err := ocsCall("DELETE", "/ocs/v1.php/apps/app_api/api/v1/ui/files-actions-menu", "", Payload{
-				"name": "ocr_png_text",
-			})
-			if err != nil {
-				r = err.Error()
-			}
-			_, err = ocsCall("DELETE", "/ocs/v1.php/apps/app_api/api/v1/ui/files-actions-menu", "", Payload{
-				"name": "ocr_jpeg_text",
+				"name": "ocr_text",
 			})
 			if err != nil {
 				r = err.Error()
