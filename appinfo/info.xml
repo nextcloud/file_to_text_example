@@ -13,7 +13,7 @@ It shouldn't be difficult to build much finer application using the [tesseract](
 
 Refer to [How to install](https://github.com/cloud-py-api/file_to_text_example/blob/main/HOW_TO_INSTALL.md) to try it.
 	]]></description>
-	<version>1.1.0</version>
+	<version>1.2.0</version>
 	<licence>agpl</licence>
 	<author mail="andrey18106x@gmail.com" homepage="https://github.com/andrey18106">Andrey Borysenko</author>
 	<author mail="bigcat88@icloud.com" homepage="https://github.com/bigcat88">Alexander Piskun</author>
@@ -32,7 +32,7 @@ Refer to [How to install](https://github.com/cloud-py-api/file_to_text_example/b
 		<docker-install>
 			<registry>ghcr.io</registry>
 			<image>cloud-py-api/file_to_text_example</image>
-			<image-tag>1.1.0</image-tag>
+			<image-tag>1.2.0</image-tag>
 		</docker-install>
 		<scopes>
 			<required>

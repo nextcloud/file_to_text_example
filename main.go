@@ -17,7 +17,6 @@ import (
 
 func main() {
 	http.HandleFunc("/heartbeat", heartbeatHandler)
-	http.HandleFunc("/init", initHandler)
 	http.HandleFunc("/enabled", enabledHandler)
 	http.HandleFunc("/ocr_text", ocrHandler)
 	port := "10070"
@@ -127,19 +126,6 @@ func heartbeatHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func initHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodPost {
-		fmt.Println("initHandler called.")
-		appId := os.Getenv("APP_ID")
-		ocsCall("PUT", "/ocs/v1.php/apps/app_api/apps/status/"+appId, "", Payload{
-			"progress": 100,
-		})
-		w.WriteHeader(http.StatusOK)
-	} else {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	}
-}
-
 func enabledHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPut {
 		fmt.Println("enabledHandler called.")
@@ -157,39 +143,35 @@ func enabledHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("enabledHandler: %v\n", isEnabled)
 		r := ""
 		if isEnabled {
-			_, err := ocsCall("POST", "/ocs/v1.php/apps/app_api/api/v1/files/actions/menu", "", Payload{
-				"fileActionMenuParams": Payload{
-					"name":           "ocr_png_text",
-					"display_name":   "Optical Text",
-					"mime":           "image/png",
-					"permissions":    31,
-					"action_handler": "/ocr_text",
-				},
+			_, err := ocsCall("POST", "/ocs/v1.php/apps/app_api/api/v1/ui/files-actions-menu", "", Payload{
+				"name":          "ocr_png_text",
+				"displayName":   "Optical Text",
+				"mime":          "image/png",
+				"permissions":   31,
+				"actionHandler": "/ocr_text",
 			})
 			if err != nil {
 				r = err.Error()
 			}
-			_, err = ocsCall("POST", "/ocs/v1.php/apps/app_api/api/v1/files/actions/menu", "", Payload{
-				"fileActionMenuParams": Payload{
-					"name":           "ocr_jpeg_text",
-					"display_name":   "Optical Text",
-					"mime":           "image/jpeg",
-					"permissions":    31,
-					"action_handler": "/ocr_text",
-				},
+			_, err = ocsCall("POST", "/ocs/v1.php/apps/app_api/api/v1/ui/files-actions-menu", "", Payload{
+				"name":          "ocr_jpeg_text",
+				"displayName":   "Optical Text",
+				"mime":          "image/jpeg",
+				"permissions":   31,
+				"actionHandler": "/ocr_text",
 			})
 			if err != nil {
 				r = err.Error()
 			}
 		} else {
-			_, err := ocsCall("DELETE", "/ocs/v1.php/apps/app_api/api/v1/files/actions/menu", "", Payload{
-				"fileActionMenuName": "ocr_png_text",
+			_, err := ocsCall("DELETE", "/ocs/v1.php/apps/app_api/api/v1/ui/files-actions-menu", "", Payload{
+				"name": "ocr_png_text",
 			})
 			if err != nil {
 				r = err.Error()
 			}
-			_, err = ocsCall("DELETE", "/ocs/v1.php/apps/app_api/api/v1/files/actions/menu", "", Payload{
-				"fileActionMenuName": "ocr_jpeg_text",
+			_, err = ocsCall("DELETE", "/ocs/v1.php/apps/app_api/api/v1/ui/files-actions-menu", "", Payload{
+				"name": "ocr_jpeg_text",
 			})
 			if err != nil {
 				r = err.Error()
@@ -204,23 +186,16 @@ func enabledHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 type UiFileActionHandlerInfo struct {
-	ActionName    string `json:"actionName"`
-	ActionHandler string `json:"actionHandler"`
-	ActionFile    struct {
-		FileId       int         `json:"fileId"`
-		Name         string      `json:"name"`
-		Directory    string      `json:"directory"`
-		Etag         string      `json:"etag"`
-		Mime         string      `json:"mime"`
-		FileType     string      `json:"fileType"`
-		Mtime        int         `json:"mtime"`
-		Size         int         `json:"size"`
-		Favorite     string      `json:"favorite"`
-		ShareOwner   interface{} `json:"shareOwner"`
-		ShareOwnerId interface{} `json:"shareOwnerId"`
-		UserId       string      `json:"userId"`
-		InstanceId   string      `json:"instanceId"`
-	} `json:"actionFile"`
+	FileId     int    `json:"fileId"`
+	Name       string `json:"name"`
+	Directory  string `json:"directory"`
+	Etag       string `json:"etag"`
+	Mime       string `json:"mime"`
+	FileType   string `json:"fileType"`
+	Mtime      int    `json:"mtime"`
+	Size       int    `json:"size"`
+	UserId     string `json:"userId"`
+	InstanceId string `json:"instanceId"`
 }
 
 func ocrHandler(w http.ResponseWriter, r *http.Request) {
@@ -246,10 +221,10 @@ func ocrHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		go func() {
 			davFileInPath := ""
-			if data.ActionFile.Directory == "/" {
-				davFileInPath = "/files/" + userId + "/" + data.ActionFile.Name
+			if data.Directory == "/" {
+				davFileInPath = "/files/" + userId + "/" + data.Name
 			} else {
-				davFileInPath = "/files/" + userId + data.ActionFile.Directory + "/" + data.ActionFile.Name
+				davFileInPath = "/files/" + userId + data.Directory + "/" + data.Name
 			}
 			oldExt := filepath.Ext(davFileInPath)
 			davFileOutPath := davFileInPath[:len(davFileInPath)-len(oldExt)] + ".txt"
