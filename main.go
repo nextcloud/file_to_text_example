@@ -19,11 +19,15 @@ func main() {
 	http.HandleFunc("/heartbeat", heartbeatHandler)
 	http.HandleFunc("/enabled", enabledHandler)
 	http.HandleFunc("/ocr_text", ocrHandler)
+	host := "127.0.0.1"
 	port := "10070"
+	if envHost, exists := os.LookupEnv("APP_HOST"); exists {
+		host = envHost
+	}
 	if envPort, exists := os.LookupEnv("APP_PORT"); exists {
 		port = envPort
 	}
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	log.Fatal(http.ListenAndServe(host+":"+port, nil))
 }
 
 type Payload map[string]interface{}
